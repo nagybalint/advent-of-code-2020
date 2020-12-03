@@ -1,9 +1,6 @@
 import math
 import os
-from task1 import map_to_grid, count_trees
-
-OPEN_SPOT = '.'
-TREE = '#'  
+from task1 import map_to_grid, count_trees 
 
 if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
