@@ -38,10 +38,10 @@ def is_passport_valid(passport: Dict[str, str]) -> bool:
             return False
     return True
 
-def count_valid_passports(passports: List[Dict[str, str]]) -> int:
+def count_valid_passports(passports: List[Dict[str, str]], validator) -> int:
     num_of_valid_passports = 0
     for passport in passports:
-        if is_passport_valid(passport):
+        if validator(passport):
             num_of_valid_passports += 1
     return num_of_valid_passports
 
@@ -49,6 +49,6 @@ if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
     file_path = os.path.join(dir_path, 'input.txt')
     passports = parse_passports(file_path)
-    answer = count_valid_passports(passports)
+    answer = count_valid_passports(passports, is_passport_valid)
     print(f'There are {answer} valid passports')
     
