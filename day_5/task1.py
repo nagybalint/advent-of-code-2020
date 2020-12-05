@@ -1,5 +1,4 @@
 import os
-from collections import defaultdict
 
 def parse_input(file_name: str) -> []:
     with open(file_name) as in_file:
