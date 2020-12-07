@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Tuple
+from typing import Dict
 from task1 import parse_input
 
 def calculate_answer(bags: Dict[str, Dict[str, int]], color: str) -> int:
