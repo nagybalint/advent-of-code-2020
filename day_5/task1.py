@@ -1,6 +1,7 @@
 import os
+from typing import List
 
-def parse_input(file_name: str) -> []:
+def parse_input(file_name: str) -> List[str]:
     with open(file_name) as in_file:
         return [line.strip() for line in in_file.readlines()]
 
