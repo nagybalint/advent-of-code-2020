@@ -39,11 +39,11 @@ def should_be_toggled(game_state: List[List[str]], row: int, col: int) -> bool:
     return False
     
 
-def play_round(game_state: List[List[str]]):
+def play_round(game_state: List[List[str]], toggle_rule):
     to_be_toggled = []
     for row in range(len(game_state)):
         for col in range(len(game_state[row])):
-            if should_be_toggled(game_state, row, col):
+            if toggle_rule(game_state, row, col):
                 to_be_toggled.append((row, col))
     
     # The hame has ended
@@ -57,14 +57,14 @@ def play_round(game_state: List[List[str]]):
             game_state[row][col] = TAKEN
     return game_state, False
 
-def play_game(game_state: List[List[str]]) -> List[List[str]]:
+def play_game(game_state: List[List[str]], toggle_rule) -> List[List[str]]:
     is_game_over = False
     while not is_game_over:
-        game_state, is_game_over = play_round(game_state)
+        game_state, is_game_over = play_round(game_state, toggle_rule)
     return game_state
 
-def calculate_answer(game_state: List[List[str]]) -> int:
-    final_state = play_game(game_state)
+def calculate_answer(game_state: List[List[str]], toggle_rule) -> int:
+    final_state = play_game(game_state, toggle_rule)
     num_of_taken = 0
     for row in final_state:
         for seat in row:
@@ -77,5 +77,5 @@ if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
     file_path = os.path.join(dir_path, 'input.txt')
     game_map = parse_input(file_path)
-    answer = calculate_answer(game_map)
+    answer = calculate_answer(game_map, should_be_toggled)
     print(answer)
