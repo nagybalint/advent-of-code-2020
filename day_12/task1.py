@@ -28,9 +28,9 @@ class Ship:
         else:
             raise Exception('Invalid instruction')
 
-        self.__execute_movement(Ship.DIRECTION_POS_DELTA[go_to_dir], instr_num)
+        self._execute_movement(Ship.DIRECTION_POS_DELTA[go_to_dir], instr_num)
     
-    def __execute_movement(self, delta, n):
+    def _execute_movement(self, delta, n):
         delta_n, delta_e = delta
         self.pos_north += (n * delta_n)
         self.pos_east += (n * delta_e)
@@ -57,8 +57,7 @@ def parse_input(file_name: str) -> List[Tuple[str, int]]:
             [line.strip() for line in in_file.readlines()]
         ))
 
-def calculate_answer(instructions: List[Tuple[str, int]]) -> int:
-    ship = Ship()
+def calculate_answer(instructions: List[Tuple[str, int]], ship: Ship) -> int:
     for instr in instructions:
         ship.apply_instruction(instr)
     return ship.get_manhattan_distance()
@@ -67,5 +66,5 @@ if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
     file_path = os.path.join(dir_path, 'input.txt')
     instructions = parse_input(file_path)
-    answer = calculate_answer(instructions)
+    answer = calculate_answer(instructions, Ship())
     print(answer)
