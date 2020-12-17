@@ -91,7 +91,7 @@ def execute_cycle():
         toggle_cube(x,y,z)
 
 def print_grid_layer(z):
-    x_range, y_range, z_range = get_grid_limits()
+    x_range, y_range, _ = get_grid_limits()
     return [[grid[z][x][y] for y in y_range] for x in x_range]
 
 if __name__ == '__main__':
