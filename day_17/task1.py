@@ -44,10 +44,10 @@ def count_active_neighbors(x: int, y: int, z: int):
 def neighbors_for(n: int):
     return [n-1, n, n+1]
 
-def get_grid_range(coord):
-    return list(range(min(coord) - 1, max(coord) + 2))
+def get_grid_limits():
+    def get_coord_range(c):
+        return list(range(min(c) - 1, max(c) + 2))
 
-def iterate_grid():
     xs = set()
     ys = set()
     zs = set()
@@ -58,41 +58,41 @@ def iterate_grid():
             for y, _ in row.items():
                 ys.add(y)
 
-    elements = []
-    for z in get_grid_range(zs):
-        for x in get_grid_range(xs):
-            for y in get_grid_range(ys):
-                 elements.append((x,y,z, grid[z][x][y]))
-    return elements
+    return get_coord_range(xs), get_coord_range(ys), get_coord_range(zs)
+
+def iterate_grid():
+    x_range, y_range, z_range = get_grid_limits()
+    for z in z_range:
+        for x in x_range:
+            for y in y_range:
+                yield x, y, z, grid[z][x][y]
 
 def calculate_answer() -> int:
     for _ in range(CYCLES):
-        toggle_list = []
-        for x, y, z, cube in iterate_grid():
-            active_neighbors = count_active_neighbors(x,y,z)
-            if cube == ACTIVE and not 2 <= active_neighbors <= 3:
-                toggle_list.append((x,y,z))
-            if cube == INACTIVE and active_neighbors == 3:
-                toggle_list.append((x,y,z))
-        for x,y,z in toggle_list:
-            toggle_cube(x,y,z)
+        execute_cycle()
+    return count_active_cubes()
+
+def count_active_cubes():
     active_cubes = 0
-    for x, y, z, cube in iterate_grid():
+    for _, _, _, cube in iterate_grid():
         if cube == ACTIVE:
             active_cubes += 1
     return active_cubes
 
-def get_grid_layer(z):
-    layer = []
-    xs = list(grid[z].keys())
-    xs.sort()
-    for x in xs:
-        layer.append([])
-        ys = list(grid[z][x].keys())
-        ys.sort()
-        for y in ys:
-            layer[-1].append(grid[z][x][y])
-    return layer
+def execute_cycle():
+    toggle_list = []
+    for x, y, z, cube in iterate_grid():
+        active_neighbors = count_active_neighbors(x,y,z)
+        if cube == ACTIVE and not 2 <= active_neighbors <= 3:
+            toggle_list.append((x,y,z))
+        if cube == INACTIVE and active_neighbors == 3:
+            toggle_list.append((x,y,z))
+    for x,y,z in toggle_list:
+        toggle_cube(x,y,z)
+
+def print_grid_layer(z):
+    x_range, y_range, z_range = get_grid_limits()
+    return [[grid[z][x][y] for y in y_range] for x in x_range]
 
 if __name__ == '__main__':
     dir_path = os.path.dirname(os.path.realpath(__file__))
